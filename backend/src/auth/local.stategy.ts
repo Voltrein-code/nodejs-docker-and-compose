@@ -12,7 +12,7 @@ export class LocalStategy extends PassportStrategy(Strategy) {
   async validate(username: string, password: string) {
     const user = await this.authService.checkUser(username, password);
 
-    if (!user) throw new UnauthorizedException();
+    if (!user) throw new UnauthorizedException('Не найден пользователь по переданными данным');
 
     return user;
   }
