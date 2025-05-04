@@ -1,0 +1,41 @@
+services:
+  frontend:
+    container_name: frontend
+    env_file: .env
+    build:
+      context: frontend
+      dockerfile: dockerfile
+    image: eshalnev/frontend-image
+    ports:
+      - 3001:80
+    networks:
+      - external
+
+  backend:
+    container_name: backend
+    env_file: .env
+    build:
+      context: backend
+      dockerfile: dockerfile
+    image: eshalnev/backend-image
+    ports:
+      - 4000:3000
+    networks:
+      - internal
+
+  postgres:
+    container_name: postgres
+    image: postgres:alpine
+    env_file: .env
+    restart: always
+    volumes:
+      - posgres_data:/data/postgres
+    networks:
+      - internal
+
+volumes:
+  posgres_data:
+
+networks:
+  internal:
+  external:
