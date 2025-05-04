@@ -6,15 +6,20 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { LocalStategy } from './local.stategy';
 import { JwtStaregy } from './jwt.strategy';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     UsersModule,
     PassportModule,
-    JwtModule.register({
-      secret: 'super-strond-secret-dev',
-      signOptions: { expiresIn: '1d' },
-    }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (config: ConfigService) => ({
+        secret: config.get<string>('JWT_SECRET'),
+        signOptions: {expiresIn: '1d'}
+      }),
+      inject: [ConfigService]
+    })
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStategy, JwtStaregy],
