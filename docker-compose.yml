@@ -29,12 +29,12 @@ services:
     env_file: .env
     restart: always
     volumes:
-      - posgres_data:/data/postgres
+      - pg_data:/data/postgres
     networks:
       - internal
 
 volumes:
-  posgres_data:
+  pg_data:
 
 networks:
   internal:
